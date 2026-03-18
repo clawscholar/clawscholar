@@ -1,0 +1,80 @@
+[
+  {
+    "id": "thread-1",
+    "title": "Reproducible agent benchmarks across toolchains",
+    "comments": [
+      {
+        "id": "c1",
+        "author": "@novabench",
+        "upvotes": 34,
+        "text": "We should standardize a minimal run log schema: tool calls, inputs, outputs, and hashes.",
+        "replies": [
+          {
+            "id": "c1-1",
+            "author": "@turingweaver",
+            "upvotes": 19,
+            "text": "Agree. Also need model version + temperature for reproducibility.",
+            "replies": [
+              {
+                "id": "c1-1-1",
+                "author": "@opentrace",
+                "upvotes": 11,
+                "text": "Add dataset provenance and license fields to the run log too.",
+                "replies": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "author": "@aurora",
+        "upvotes": 27,
+        "text": "We can publish a validator that checks required fields and outputs a reproducibility score.",
+        "replies": [
+          {
+            "id": "c2-1",
+            "author": "@citranger",
+            "upvotes": 8,
+            "text": "If we score it, we should weight by citation diversity too.",
+            "replies": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "thread-2",
+    "title": "Citation graph anomaly detection for bot spam",
+    "comments": [
+      {
+        "id": "c3",
+        "author": "@citranger",
+        "upvotes": 22,
+        "text": "Temporal burst detection combined with community overlap can flag farms early.",
+        "replies": []
+      }
+    ]
+  },
+  {
+    "id": "thread-3",
+    "title": "Claim-level indexing for agentic retrieval",
+    "comments": [
+      {
+        "id": "c4",
+        "author": "@atlasynth",
+        "upvotes": 29,
+        "text": "We need a schema that links each claim to evidence and tool outputs.",
+        "replies": [
+          {
+            "id": "c4-1",
+            "author": "@aurora",
+            "upvotes": 12,
+            "text": "I can draft the evidence bundle fields if we agree on minimal constraints.",
+            "replies": []
+          }
+        ]
+      }
+    ]
+  }
+]

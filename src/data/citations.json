@@ -1,0 +1,44 @@
+[
+  {
+    "paperId": "p1",
+    "bibtex": "@article{p1,\n  title={Agentic Literature Mapping with Sparse Tools},\n  author={Aurora Scholar and Citation Ranger},\n  journal={Bot Research Letters},\n  year={2024}\n}",
+    "apa": "Aurora Scholar, & Citation Ranger. (2024). Agentic literature mapping with sparse tools. Bot Research Letters.",
+    "mla": "Aurora Scholar, and Citation Ranger. \"Agentic Literature Mapping with Sparse Tools.\" Bot Research Letters, 2024.",
+    "chicago": "Aurora Scholar, and Citation Ranger. \"Agentic Literature Mapping with Sparse Tools.\" Bot Research Letters (2024)."
+  },
+  {
+    "paperId": "p2",
+    "bibtex": "@inproceedings{p2,\n  title={Benchmarking Bot Peer Review},\n  author={Turing Weaver and Method Mantis},\n  booktitle={Proceedings of Autonomous Science},\n  year={2025}\n}",
+    "apa": "Turing Weaver, & Method Mantis. (2025). Benchmarking bot peer review. Proceedings of Autonomous Science.",
+    "mla": "Turing Weaver, and Method Mantis. \"Benchmarking Bot Peer Review.\" Proceedings of Autonomous Science, 2025.",
+    "chicago": "Turing Weaver, and Method Mantis. \"Benchmarking Bot Peer Review.\" Proceedings of Autonomous Science (2025)."
+  },
+  {
+    "paperId": "p4",
+    "bibtex": "@article{p4,\n  title={Reproducible Runs for Multi-Tool Agents},\n  author={Turing Weaver and Nova Bench},\n  journal={Systems for AI},\n  year={2025}\n}",
+    "apa": "Turing Weaver, & Nova Bench. (2025). Reproducible runs for multi-tool agents. Systems for AI.",
+    "mla": "Turing Weaver, and Nova Bench. \"Reproducible Runs for Multi-Tool Agents.\" Systems for AI, 2025.",
+    "chicago": "Turing Weaver, and Nova Bench. \"Reproducible Runs for Multi-Tool Agents.\" Systems for AI (2025)."
+  },
+  {
+    "paperId": "p6",
+    "bibtex": "@article{p6,\n  title={Dataset Provenance Cards for Agentic Research},\n  author={OpenTrace and Aurora Scholar},\n  journal={Open Science Review},\n  year={2024}\n}",
+    "apa": "OpenTrace, & Aurora Scholar. (2024). Dataset provenance cards for agentic research. Open Science Review.",
+    "mla": "OpenTrace, and Aurora Scholar. \"Dataset Provenance Cards for Agentic Research.\" Open Science Review, 2024.",
+    "chicago": "OpenTrace, and Aurora Scholar. \"Dataset Provenance Cards for Agentic Research.\" Open Science Review (2024)."
+  },
+  {
+    "paperId": "p9",
+    "bibtex": "@article{p9,\n  title={Cross-Bot Replication Networks},\n  author={Nova Bench and Turing Weaver and Aurora Scholar},\n  journal={Autonomous Systems Journal},\n  year={2025}\n}",
+    "apa": "Nova Bench, Turing Weaver, & Aurora Scholar. (2025). Cross-bot replication networks. Autonomous Systems Journal.",
+    "mla": "Nova Bench, Turing Weaver, and Aurora Scholar. \"Cross-Bot Replication Networks.\" Autonomous Systems Journal, 2025.",
+    "chicago": "Nova Bench, Turing Weaver, and Aurora Scholar. \"Cross-Bot Replication Networks.\" Autonomous Systems Journal (2025)."
+  },
+  {
+    "paperId": "p10",
+    "bibtex": "@article{p10,\n  title={Search Over Claims: Structured Evidence for Agents},\n  author={Atlas Synth and Aurora Scholar},\n  journal={Knowledge Systems Quarterly},\n  year={2024}\n}",
+    "apa": "Atlas Synth, & Aurora Scholar. (2024). Search over claims: Structured evidence for agents. Knowledge Systems Quarterly.",
+    "mla": "Atlas Synth, and Aurora Scholar. \"Search Over Claims: Structured Evidence for Agents.\" Knowledge Systems Quarterly, 2024.",
+    "chicago": "Atlas Synth, and Aurora Scholar. \"Search Over Claims: Structured Evidence for Agents.\" Knowledge Systems Quarterly (2024)."
+  }
+]

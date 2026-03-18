@@ -1,0 +1,98 @@
+[
+  {
+    "id": "a1",
+    "name": "Lina Park",
+    "affiliation": "Eastbridge Institute",
+    "emailDomain": "eastbridge.edu",
+    "interests": ["information retrieval", "ranking", "scholarly search"],
+    "metrics": { "citations": 3120, "hIndex": 24, "i10Index": 42 }
+  },
+  {
+    "id": "a2",
+    "name": "Miguel Ortega",
+    "affiliation": "Northline University",
+    "emailDomain": "northline.edu",
+    "interests": ["knowledge graphs", "semantic search", "open access"],
+    "metrics": { "citations": 2875, "hIndex": 22, "i10Index": 36 }
+  },
+  {
+    "id": "a3",
+    "name": "Priya Nandakumar",
+    "affiliation": "Redwood Labs",
+    "emailDomain": "redwoodlabs.ai",
+    "interests": ["bibliometrics", "author disambiguation", "research analytics"],
+    "metrics": { "citations": 1980, "hIndex": 18, "i10Index": 28 }
+  },
+  {
+    "id": "a4",
+    "name": "Jonas Keller",
+    "affiliation": "Helix Research",
+    "emailDomain": "helixresearch.org",
+    "interests": ["nlp", "summarization", "scholarly datasets"],
+    "metrics": { "citations": 2410, "hIndex": 20, "i10Index": 31 }
+  },
+  {
+    "id": "a5",
+    "name": "Ava Chen",
+    "affiliation": "Maritime Tech",
+    "emailDomain": "maritimetech.com",
+    "interests": ["patent search", "technology transfer", "innovation mapping"],
+    "metrics": { "citations": 1160, "hIndex": 15, "i10Index": 21 }
+  },
+  {
+    "id": "a6",
+    "name": "Samuel Okoro",
+    "affiliation": "Meridian University",
+    "emailDomain": "meridian.edu",
+    "interests": ["research policy", "altmetrics", "impact assessment"],
+    "metrics": { "citations": 1540, "hIndex": 17, "i10Index": 24 }
+  },
+  {
+    "id": "a7",
+    "name": "Hana Ito",
+    "affiliation": "Kyoto Computing Center",
+    "emailDomain": "kcc.jp",
+    "interests": ["graph neural networks", "citation prediction", "network science"],
+    "metrics": { "citations": 2050, "hIndex": 19, "i10Index": 30 }
+  },
+  {
+    "id": "a8",
+    "name": "Ethan Brooks",
+    "affiliation": "Caldera College",
+    "emailDomain": "caldera.edu",
+    "interests": ["data visualization", "science mapping", "ux research"],
+    "metrics": { "citations": 980, "hIndex": 13, "i10Index": 17 }
+  },
+  {
+    "id": "a9",
+    "name": "Sofia Alvarez",
+    "affiliation": "Horizon Medical",
+    "emailDomain": "horizonmed.org",
+    "interests": ["biomedical search", "systematic reviews", "evidence synthesis"],
+    "metrics": { "citations": 1675, "hIndex": 18, "i10Index": 26 }
+  },
+  {
+    "id": "a10",
+    "name": "Ravi Shah",
+    "affiliation": "Qubit Institute",
+    "emailDomain": "qubit.ai",
+    "interests": ["embedding models", "dense retrieval", "ranking"],
+    "metrics": { "citations": 2225, "hIndex": 21, "i10Index": 34 }
+  },
+  {
+    "id": "a11",
+    "name": "Claire Boudreaux",
+    "affiliation": "Pacific Institute",
+    "emailDomain": "pacificinst.edu",
+    "interests": ["open science", "metadata curation", "repositories"],
+    "metrics": { "citations": 1340, "hIndex": 16, "i10Index": 20 }
+  },
+  {
+    "id": "a12",
+    "name": "Omar Patel",
+    "affiliation": "Atlas AI",
+    "emailDomain": "atlas.ai",
+    "interests": ["entity resolution", "multilingual search", "knowledge graphs"],
+    "metrics": { "citations": 1435, "hIndex": 17, "i10Index": 23 }
+  }
+]

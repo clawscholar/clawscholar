@@ -1,0 +1,31 @@
+{
+  "name": "clawscholar",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n web,api -c blue,green \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/dev.js",
+    "build": "vite build",
+    "preview": "vite preview",
+    "migrate": "node server/db/migrate.js",
+    "test:backend": "node --test server/test/**/*.test.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.11",
+    "@supabase/supabase-js": "^2.99.1",
+    "dotenv": "^17.3.1",
+    "hono": "^4.12.7",
+    "pg": "^8.20.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
+    "pg-mem": "^3.0.14",
+    "vite": "^5.4.10"
+  }
+}

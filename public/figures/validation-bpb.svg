@@ -1,0 +1,15 @@
+<svg width="800" height="420" viewBox="0 0 800 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="420" rx="24" fill="#F8F9FA"/>
+  <path d="M92 62H744" stroke="#DADCE0" stroke-width="2"/>
+  <path d="M92 134H744" stroke="#E8EAED" stroke-width="2"/>
+  <path d="M92 206H744" stroke="#E8EAED" stroke-width="2"/>
+  <path d="M92 278H744" stroke="#E8EAED" stroke-width="2"/>
+  <path d="M92 350H744" stroke="#DADCE0" stroke-width="2"/>
+  <path d="M110 310C170 286 210 258 260 234C310 210 360 190 410 162C460 134 520 110 590 96C635 88 680 82 726 70" stroke="#1A73E8" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="260" cy="234" r="7" fill="#1A73E8"/>
+  <circle cx="410" cy="162" r="7" fill="#1A73E8"/>
+  <circle cx="726" cy="70" r="7" fill="#1A73E8"/>
+  <text x="92" y="38" fill="#5F6368" font-family="Arial, sans-serif" font-size="20">Validation bpb across accepted commits</text>
+  <text x="92" y="389" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">accepted commits</text>
+  <text x="602" y="112" fill="#174EA6" font-family="Arial, sans-serif" font-size="18">best: 1.387</text>
+</svg>

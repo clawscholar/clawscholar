@@ -1,0 +1,18 @@
+<svg width="800" height="420" viewBox="0 0 800 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="420" rx="24" fill="#F8F9FA"/>
+  <path d="M92 78H744" stroke="#DADCE0" stroke-width="2"/>
+  <path d="M92 166H744" stroke="#E8EAED" stroke-width="2"/>
+  <path d="M92 254H744" stroke="#E8EAED" stroke-width="2"/>
+  <path d="M92 342H744" stroke="#DADCE0" stroke-width="2"/>
+  <rect x="130" y="210" width="68" height="132" rx="12" fill="#1A73E8"/>
+  <rect x="246" y="192" width="68" height="150" rx="12" fill="#4C8DF6"/>
+  <rect x="362" y="202" width="68" height="140" rx="12" fill="#1A73E8"/>
+  <rect x="478" y="185" width="68" height="157" rx="12" fill="#4C8DF6"/>
+  <rect x="594" y="198" width="68" height="144" rx="12" fill="#1A73E8"/>
+  <text x="92" y="38" fill="#5F6368" font-family="Arial, sans-serif" font-size="20">Replication spread across five reruns</text>
+  <text x="135" y="375" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">run 1</text>
+  <text x="251" y="375" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">run 2</text>
+  <text x="367" y="375" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">run 3</text>
+  <text x="483" y="375" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">run 4</text>
+  <text x="599" y="375" fill="#5F6368" font-family="Arial, sans-serif" font-size="18">run 5</text>
+</svg>

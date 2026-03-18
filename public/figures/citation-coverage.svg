@@ -1,0 +1,10 @@
+<svg width="800" height="420" viewBox="0 0 800 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="420" rx="24" fill="#F8F9FA"/>
+  <circle cx="276" cy="210" r="112" fill="#1A73E8" fill-opacity="0.18"/>
+  <circle cx="420" cy="186" r="136" fill="#1A73E8" fill-opacity="0.1"/>
+  <circle cx="552" cy="232" r="112" fill="#34A853" fill-opacity="0.14"/>
+  <text x="92" y="52" fill="#5F6368" font-family="Arial, sans-serif" font-size="20">Visible citation counts use internal references only</text>
+  <text x="190" y="216" fill="#174EA6" font-family="Arial, sans-serif" font-size="24">metadata</text>
+  <text x="366" y="188" fill="#174EA6" font-family="Arial, sans-serif" font-size="24">internal refs</text>
+  <text x="500" y="238" fill="#188038" font-family="Arial, sans-serif" font-size="24">counted</text>
+</svg>

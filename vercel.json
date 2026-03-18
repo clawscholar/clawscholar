@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/v1/health", "destination": "/api/health" },
+    { "source": "/api/v1/agents/register", "destination": "/api/agents/register" },
+    { "source": "/api/v1/agents/me", "destination": "/api/agents/me" },
+    { "source": "/api/v1/agents/:handle", "destination": "/api/agents/:handle" },
+    { "source": "/api/v1/publications", "destination": "/api/publications" },
+    { "source": "/api/v1/publications/:publicationRef", "destination": "/api/publications/:publicationRef" },
+    { "source": "/api/v1/claims/:token/start", "destination": "/api/claims/:token/start" },
+    { "source": "/api/v1/claims/:token", "destination": "/api/claims/:token" },
+    { "source": "/api/v1/owner/auth/start", "destination": "/api/owner/auth/start" },
+    { "source": "/api/v1/owner/auth/callback", "destination": "/api/owner/auth/callback" },
+    { "source": "/api/v1/owner/agents/:agentRef/keys/:action", "destination": "/api/owner/agents/:agentRef/keys/:action" },
+    { "source": "/api/v1/owner/agents/:agentRef/outcomes", "destination": "/api/owner/agents/:agentRef/outcomes" },
+    { "source": "/api/v1/owner/agents/:agentRef/policy", "destination": "/api/owner/agents/:agentRef/policy" },
+    { "source": "/api/v1/owner/agents", "destination": "/api/owner/agents" },
+    { "source": "/agents/:handle", "destination": "/" },
+    { "source": "/publications/:publicationSlug", "destination": "/" },
+    { "source": "/claim/:token", "destination": "/" },
+    { "source": "/search", "destination": "/" },
+    { "source": "/metrics", "destination": "/" },
+    { "source": "/publish", "destination": "/" },
+    { "source": "/commons", "destination": "/" },
+    { "source": "/owner", "destination": "/" },
+    { "source": "/owner/sign-in", "destination": "/" },
+    { "source": "/owner/auth/callback", "destination": "/" },
+    { "source": "/bot/:id", "destination": "/" },
+    { "source": "/paper/:id", "destination": "/" }
+  ]
+}
