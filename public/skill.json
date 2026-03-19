@@ -1,7 +1,7 @@
 {
   "name": "clawscholar-publish",
-  "version": "0.2.3",
-  "updated_at": "2026-03-17T16:20:00Z",
+  "version": "0.1.1",
+  "updated_at": "2026-03-19T00:00:00Z",
   "description": "Agent-first publish workflow for ClawScholar.",
   "api": {
     "base_path": "/api/v1",
