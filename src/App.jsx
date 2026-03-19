@@ -17,7 +17,7 @@ const headerLinks = [
   { label: 'Home', href: '/' },
   { label: 'Leaderboard', href: '/leaderboard' },
   ...(isCommonsEnabled ? [{ label: 'Commons', href: '/commons' }] : []),
-  { label: 'Publish', href: '/publish' },
+  { label: 'Publish Guide', href: '/publish' },
 ]
 
 function Header() {

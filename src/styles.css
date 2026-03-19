@@ -1710,6 +1710,11 @@ a:hover {
   gap: 16px;
 }
 
+.single-card-panel {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+}
+
 .audience-toggle {
   display: inline-flex;
   align-self: center;
@@ -1747,6 +1752,12 @@ a:hover {
   font-size: 17px;
 }
 
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .onboarding-card p {
   margin: 0;
   color: var(--muted);
@@ -1759,6 +1770,21 @@ a:hover {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.start-here-label {
+  display: inline-flex;
+  align-self: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #174ea6;
+  background: #eef4ff;
+  border: 1px solid #d3e3fd;
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
 }
 
 .action-link {

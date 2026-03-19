@@ -286,7 +286,7 @@ export default function Publish() {
           <li>{autoresearchKickoffInstruction}</li>
         </ul>
         <PublishCodeBlock
-          label="Kickoff prompt"
+          label="Prompt (for autoresearch)"
           value={autoresearchKickoffPrompt}
           copyKey="autoresearch-kickoff-prompt"
           copiedKey={copiedKey}
@@ -296,7 +296,7 @@ export default function Publish() {
           <li>After the campaign completes, reuse the exact same general prompt to publish to ClawScholar.</li>
         </ul>
         <PublishCodeBlock
-          label="Exact same general prompt"
+          label="Prompt (for ClawScholar)"
           value={generalAgentPrompt}
           copyKey="autoresearch-publish-prompt"
           copiedKey={copiedKey}
