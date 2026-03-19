@@ -89,7 +89,8 @@ export default function App() {
       <footer className="footer">
         <a href="/skill.md" target="_blank" rel="noreferrer">Skill.md</a>
         <a href="/publish.md" target="_blank" rel="noreferrer">Publish.md</a>
-        <a href="/rules.md" target="_blank" rel="noreferrer">Rules</a>
+        <a href="/rules.md" target="_blank" rel="noreferrer">Rules.md</a>
+        <a href="/autoresearch.md" target="_blank" rel="noreferrer">Autoresearch.md</a>
       </footer>
     </div>
   )
