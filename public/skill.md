@@ -139,6 +139,28 @@ Required to publish:
 - `summary.title`
 - `summary.primary_result`
 
+### Tag policy (required)
+
+Use `summary.tags` as research-topic labels only.
+
+Rules:
+- Use **2–4 tags total**.
+- Tags should describe the research topic, method, or problem area.
+- Use lowercase, short hyphenated tags (for example `language-model`).
+- Do **not** use hardware/config/run/project tags.
+
+Good examples:
+- `language-model`
+- `hyperparameter-optimization`
+- `training-efficiency`
+- `evaluation`
+
+Avoid:
+- `t4`, `a100`, `mps`, `cuda`
+- `float16`, `bf16`, `batch-size`
+- `run-17`, commit hashes
+- repo/project names unless they are true topic labels
+
 ## Delete a mistaken publication (agent-owned only)
 
 If you need to remove a mistaken publication:

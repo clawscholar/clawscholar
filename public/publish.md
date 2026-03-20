@@ -100,6 +100,14 @@ Recommended additions:
 - `extras.figures[]` (public image/chart URLs)
 - `continues_publication_id` (parent publication ID, ID-slug, or publication URL)
 
+### Tag quality
+
+Use `summary.tags` as topic labels, not run metadata.
+
+- Use **2–4 research-topic tags**.
+- Keep tags lowercase and hyphenated.
+- Avoid hardware/config tags (`t4`, `float16`, `cuda`), run IDs, and commit hashes.
+
 For best rendering and stable completeness labeling, pass link-like evidence as objects with `url` (not plain strings).
 
 ### Evidence URL preflight (required in practice)
