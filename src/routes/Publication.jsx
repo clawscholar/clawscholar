@@ -240,6 +240,7 @@ export default function Publication() {
   }, [publicationSlug, staticPublication])
 
   const publication = staticPublication || liveState.publication
+  const citationRefs = publication?.citationRefs || []
 
   const citedBy = useMemo(() => {
     if (!publication || !staticPublication) return []
@@ -248,13 +249,41 @@ export default function Publication() {
       .filter(Boolean)
   }, [catalog.publicationMap, publication, staticPublication])
 
-  const citedPublications = useMemo(() => {
-    if (!publication || !staticPublication) return []
-    return (publication.citationRefs || [])
-      .filter((reference) => reference.type === 'internal')
-      .map((reference) => catalog.publicationMap.get(reference.publicationId))
-      .filter(Boolean)
-  }, [catalog.publicationMap, publication, staticPublication])
+  const citedWorks = useMemo(() => {
+    if (!publication) return []
+
+    const internalRefs = citationRefs.filter((reference) => reference.type === 'internal')
+    const internalWorks = !staticPublication
+      ? internalRefs.map((reference) => ({
+        key: reference.publicationId || reference.url || reference.label || 'internal-ref',
+        label: reference.label || reference.publicationId || 'Referenced publication',
+        url: reference.url || '',
+        publicationPath: '',
+        external: true,
+      }))
+      : internalRefs
+        .map((reference) => catalog.publicationMap.get(reference.publicationId))
+        .filter(Boolean)
+        .map((item) => ({
+          key: item.id,
+          label: item.title,
+          url: '',
+          publicationPath: item.publicationPath,
+          external: false,
+        }))
+
+    const externalWorks = citationRefs
+      .filter((reference) => reference.type === 'external')
+      .map((reference, index) => ({
+        key: `external-${reference.url || reference.label || index}`,
+        label: reference.label || reference.url || 'External reference',
+        url: reference.url || '',
+        publicationPath: '',
+        external: true,
+      }))
+
+    return [...internalWorks, ...externalWorks]
+  }, [catalog.publicationMap, citationRefs, publication, staticPublication])
 
   const tsvArtifactUrl = publication?.results?.artifactUrl || null
 
@@ -360,7 +389,6 @@ export default function Publication() {
   const repo = publication.repo || { url: '', snapshotUrl: '', branch: 'Not provided', commitSha: 'Not provided' }
   const results = publication.results || { headline: publication.primaryResult, points: [], artifactUrl: null }
   const provenance = publication.provenance || {}
-  const citationRefs = publication.citationRefs || []
   const commitHistory = publication.commitHistory || []
   const publicArtifacts = publication.publicArtifacts || []
   const runStats = publication.runStats || null
@@ -613,36 +641,27 @@ export default function Publication() {
           )}
         </section>
 
-        {(citedPublications.length > 0 || citedBy.length > 0 || citationRefs.some((reference) => reference.type === 'external')) && (
+        {(citedWorks.length > 0 || citedBy.length > 0) && (
           <section className="panel publication-section">
-            <h3>Citations</h3>
-            {citedPublications.length > 0 && (
-              <div className="citation-group">
-                <strong>Cites</strong>
-                <ul className="paper-list">
-                  {citedPublications.map((item) => (
-                    <li key={item.id}>
-                      <Link to={item.publicationPath}>{item.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {citationRefs.some((reference) => reference.type === 'external') && (
-              <div className="citation-group">
-                <strong>External references</strong>
-                <ul className="paper-list">
-                  {citationRefs
-                    .filter((reference) => reference.type === 'external')
-                    .map((reference) => (
-                      <li key={reference.label}>
-                        <a href={reference.url} target="_blank" rel="noreferrer">
-                          {reference.label}
+            <h3>Cites ({citedWorks.length})</h3>
+            {citedWorks.length > 0 && (
+              <ul className="paper-list">
+                {citedWorks.map((item) => (
+                  <li key={item.key}>
+                    {item.external ? (
+                      item.url ? (
+                        <a href={item.url} target="_blank" rel="noreferrer">
+                          {item.label}
                         </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+                      ) : (
+                        <span>{item.label}</span>
+                      )
+                    ) : (
+                      <Link to={item.publicationPath}>{item.label}</Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
             )}
             {citedBy.length > 0 && (
               <div className="citation-group">
