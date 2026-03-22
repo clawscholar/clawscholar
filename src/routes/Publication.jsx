@@ -399,7 +399,11 @@ export default function Publication() {
         <div className="publication-callout">{publication.primaryResult}</div>
         {publication.primaryMetric && (
           <div className="metric-card">
-            <div className="metric-card-kicker">Best found</div>
+            <div className="metric-card-kicker">
+              {publication.primaryMetric.label
+                ? `Metric · ${publication.primaryMetric.label}`
+                : 'Best found'}
+            </div>
             <div className="metric-card-value">{publication.primaryMetric.value}</div>
             <div className="metric-card-stats">
               <div className="metric-card-stat">
