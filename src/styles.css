@@ -1796,6 +1796,32 @@ a:hover {
   margin-top: auto;
 }
 
+.home-prompt-copy {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-prompt-copy code {
+  display: inline-block;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.home-prompt-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .compact-empty {
   border-top: 1px solid var(--border);
   border-radius: 0 0 var(--radius) var(--radius);
