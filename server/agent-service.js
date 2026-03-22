@@ -60,6 +60,11 @@ const CORE_ARTIFACT_TYPES = new Set([
 const isUniqueViolation = (error) => error?.code === '23505'
 const withSuffix = (base, attempt) => (attempt === 0 ? base : `${base}-${attempt + 1}`)
 const AGENT_NAME_UNIQUE_INDEX = 'agents_name_lower_unique_idx'
+const PUBLICATIONS_DEFAULT_LIMIT = 25
+const PUBLICATIONS_MAX_LIMIT = 100
+const PUBLICATION_SORT_NEWEST = 'newest'
+const PUBLICATION_SORT_MOST_CITED = 'most_cited'
+const VALID_PUBLICATION_SORTS = new Set([PUBLICATION_SORT_NEWEST, PUBLICATION_SORT_MOST_CITED])
 
 function trimText(value) {
   return typeof value === 'string' ? value.trim() : ''
@@ -159,6 +164,20 @@ function validateRegistration({ name, description } = {}) {
   }
 
   return { normalized, errors }
+}
+
+function parsePublicationListOptions(input = {}) {
+  const query = trimText(input.q)
+  const sortInput = trimText(input.sort).toLowerCase()
+  const sort = VALID_PUBLICATION_SORTS.has(sortInput) ? sortInput : PUBLICATION_SORT_NEWEST
+  const parsedLimit = Number.parseInt(String(input.limit || ''), 10)
+  const limit = Number.isFinite(parsedLimit)
+    ? Math.max(1, Math.min(PUBLICATIONS_MAX_LIMIT, parsedLimit))
+    : PUBLICATIONS_DEFAULT_LIMIT
+  const parsedCursor = Number.parseInt(String(input.cursor || ''), 10)
+  const offset = Number.isFinite(parsedCursor) && parsedCursor > 0 ? parsedCursor : 0
+
+  return { q: query, sort, limit, offset }
 }
 
 function validatePublicationPayload(input = {}) {
@@ -1262,14 +1281,53 @@ export function createAgentService({ pool, config }) {
       return serializePublicAgent(result.rows[0], config)
     },
 
-    async listPublications() {
+    async listPublications(input = {}) {
+      const options = parsePublicationListOptions(input)
+      const params = []
+      const where = ['p.is_public = TRUE']
+
+      if (options.q) {
+        params.push(`%${options.q}%`)
+        const queryParam = `$${params.length}`
+        where.push(`(
+          p.title ILIKE ${queryParam}
+          OR COALESCE(p.abstract, '') ILIKE ${queryParam}
+          OR p.primary_result ILIKE ${queryParam}
+          OR a.name ILIKE ${queryParam}
+          OR a.handle ILIKE ${queryParam}
+          OR COALESCE(p.tags::text, '') ILIKE ${queryParam}
+        )`)
+      }
+
+      const orderBy = options.sort === PUBLICATION_SORT_MOST_CITED
+        ? 'p.citation_count DESC, p.published_at DESC, p.publication_id DESC'
+        : 'p.published_at DESC, p.publication_id DESC'
+
+      params.push(options.limit + 1)
+      const limitParam = `$${params.length}`
+      params.push(options.offset)
+      const offsetParam = `$${params.length}`
+
       const result = await pool.query(
         `${publicationSelect}
-         WHERE p.is_public = TRUE
-         ORDER BY p.published_at DESC, p.publication_id DESC`
+         WHERE ${where.join(' AND ')}
+         ORDER BY ${orderBy}
+         LIMIT ${limitParam}
+         OFFSET ${offsetParam}`,
+        params
       )
 
-      return result.rows.map((row) => serializePublication(row, config))
+      const hasMore = result.rows.length > options.limit
+      const slicedRows = hasMore ? result.rows.slice(0, options.limit) : result.rows
+      const nextCursor = hasMore ? String(options.offset + options.limit) : null
+
+      return {
+        publications: slicedRows.map((row) => serializePublication(row, config)),
+        has_more: hasMore,
+        next_cursor: nextCursor,
+        sort: options.sort,
+        q: options.q || '',
+      }
     },
 
     async getPublication(publicationRef) {

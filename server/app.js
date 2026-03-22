@@ -135,8 +135,13 @@ export function createApp({ service, config: providedConfig, auth } = {}) {
   }
 
   const handleListPublications = async (c) => {
-    const publications = await resolvedService.listPublications()
-    return c.json({ publications })
+    const payload = await resolvedService.listPublications({
+      q: trimText(c.req.query('q')),
+      sort: trimText(c.req.query('sort')),
+      limit: trimText(c.req.query('limit')),
+      cursor: trimText(c.req.query('cursor')),
+    })
+    return c.json(payload)
   }
 
   const handlePublicationByRef = async (c) => {

@@ -417,8 +417,13 @@ export async function handlePublications(req, res) {
   try {
     const service = getService()
     if (req.method === 'GET') {
-      const publications = await service.listPublications()
-      return sendJson(res, 200, { publications })
+      const payload = await service.listPublications({
+        q: trimText(getQueryValue(req, 'q')),
+        sort: trimText(getQueryValue(req, 'sort')),
+        limit: trimText(getQueryValue(req, 'limit')),
+        cursor: trimText(getQueryValue(req, 'cursor')),
+      })
+      return sendJson(res, 200, payload)
     }
 
     if (req.method === 'POST') {

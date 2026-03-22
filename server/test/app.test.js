@@ -1608,6 +1608,79 @@ test('lists live publications newest first with embedded public agent trust fiel
   }
 })
 
+test('supports publication discovery params (q, sort, limit, cursor)', async () => {
+  const ctx = await createTestContext()
+  try {
+    const firstAgent = await parseJson(await registerAgent(ctx.app, {
+      name: 'Discovery Agent One',
+      description: 'Publishes baseline discovery payloads for query/sort tests.',
+    }))
+    const secondAgent = await parseJson(await registerAgent(ctx.app, {
+      name: 'Discovery Agent Two',
+      description: 'Publishes continuation records for citation-ranked discovery tests.',
+    }))
+
+    const parentResponse = await publishPublication(ctx.app, firstAgent.api_key, {
+      ...completePublicationPayload,
+      source_id: 'discovery-agent-one:parent',
+      summary: {
+        ...completePublicationPayload.summary,
+        title: 'Gradient clipping for language-model stability',
+        primary_result: 'Stable training achieved with clipping threshold tuning.',
+      },
+    })
+    assert.equal(parentResponse.status, 201)
+    const parentBody = await parseJson(parentResponse)
+
+    const childResponse = await publishPublication(ctx.app, secondAgent.api_key, {
+      ...completePublicationPayload,
+      source_id: 'discovery-agent-two:child',
+      continues_publication_id: parentBody.publication_id,
+      summary: {
+        ...completePublicationPayload.summary,
+        title: 'Continuation run for gradient clipping baseline',
+        primary_result: 'Extended experiments confirm the parent run outcome.',
+      },
+    })
+    assert.equal(childResponse.status, 201)
+
+    const unrelatedResponse = await publishPublication(ctx.app, secondAgent.api_key, {
+      ...validPublicationPayload,
+      source_id: 'discovery-agent-two:other',
+      summary: {
+        ...validPublicationPayload.summary,
+        title: 'Tokenizer ablation for byte-level models',
+        primary_result: 'Tokenizer split had no meaningful metric impact.',
+      },
+    })
+    assert.equal(unrelatedResponse.status, 201)
+
+    const filtered = await ctx.app.request('http://localhost/api/v1/publications?q=gradient&sort=most_cited&limit=1')
+    assert.equal(filtered.status, 200)
+    const filteredBody = await parseJson(filtered)
+
+    assert.equal(Array.isArray(filteredBody.publications), true)
+    assert.equal(filteredBody.publications.length, 1)
+    assert.equal(filteredBody.publications[0].title, 'Gradient clipping for language-model stability')
+    assert.equal(filteredBody.sort, 'most_cited')
+    assert.equal(filteredBody.q, 'gradient')
+    assert.equal(filteredBody.has_more, true)
+    assert.equal(typeof filteredBody.next_cursor, 'string')
+
+    const nextPage = await ctx.app.request(`http://localhost/api/v1/publications?q=gradient&sort=most_cited&limit=1&cursor=${filteredBody.next_cursor}`)
+    assert.equal(nextPage.status, 200)
+    const nextBody = await parseJson(nextPage)
+
+    assert.equal(Array.isArray(nextBody.publications), true)
+    assert.equal(nextBody.publications.length, 1)
+    assert.equal(nextBody.publications[0].title, 'Continuation run for gradient clipping baseline')
+    assert.equal(nextBody.has_more, false)
+    assert.equal(nextBody.next_cursor, null)
+  } finally {
+    await ctx.close()
+  }
+})
+
 test('returns a persisted publication by exact id and id-slug', async () => {
   const ctx = await createTestContext()
   try {
