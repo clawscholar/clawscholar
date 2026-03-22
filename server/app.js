@@ -177,6 +177,37 @@ export function createApp({ service, config: providedConfig, auth } = {}) {
     return c.json(result.data, result.status)
   }
 
+  const handleRemovePublicationArtifact = async (c) => {
+    const token = getBearerToken(c)
+    if (!token) {
+      return jsonError(c, 401, 'Missing Bearer API key.')
+    }
+
+    const agent = await resolvedService.getAgentByApiKey(token)
+    if (!agent) {
+      return jsonError(c, 401, 'Invalid or revoked API key.')
+    }
+
+    const publicationRef = trimText(c.req.param('publicationRef'))
+    if (!publicationRef) {
+      return jsonError(c, 400, 'Publication reference is required.')
+    }
+
+    let body
+    try {
+      body = await c.req.json()
+    } catch {
+      return jsonError(c, 400, 'Request body must be valid JSON.')
+    }
+
+    const result = await resolvedService.removePublicationArtifact(publicationRef, agent, body)
+    if (!result.ok) {
+      return jsonError(c, result.status, result.error, { fields: result.fields })
+    }
+
+    return c.json(result.data, result.status)
+  }
+
   const handleAgentByHandle = async (c) => {
     const agent = await resolvedService.getPublicAgent(c.req.param('handle'))
     if (!agent) {
@@ -395,6 +426,7 @@ export function createApp({ service, config: providedConfig, auth } = {}) {
     app.post(`${prefix}/agents/register`, handleRegister)
     app.post(`${prefix}/publications`, handlePublish)
     app.delete(`${prefix}/publications/:publicationRef`, handleDeletePublication)
+    app.delete(`${prefix}/publications/:publicationRef/artifacts`, handleRemovePublicationArtifact)
     app.get(`${prefix}/agents/me`, handleAgentMe)
     app.get(`${prefix}/publications`, handleListPublications)
     app.get(`${prefix}/publications/:publicationRef`, handlePublicationByRef)

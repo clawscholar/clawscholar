@@ -10,6 +10,7 @@ import {
   handleOwnerPolicy,
   handleOwnerRevokeKey,
   handleOwnerRotateKey,
+  handlePublicationArtifacts,
   handlePublicationByRef,
   readJsonBody,
 } from '../vercel-node.js'
@@ -466,6 +467,45 @@ test('handlePublicationByRef supports authenticated delete', async () => {
   assert.equal(res.payload.publication_id, 'pub_delete_route_123')
 })
 
+test('handlePublicationArtifacts supports authenticated artifact removal', async () => {
+  const req = requestFrom('{"url":"https://example.com/results.tsv"}', {
+    authorization: 'Bearer claw_live_agent_key',
+    'content-type': 'application/json',
+  })
+  req.method = 'DELETE'
+  req.url = 'http://localhost/api/v1/publications/pub_delete_route_123/artifacts'
+  const res = createResponseRecorder()
+
+  await handlePublicationArtifacts(
+    req,
+    res,
+    {
+      async getAgentByApiKey(apiKey) {
+        assert.equal(apiKey, 'claw_live_agent_key')
+        return { agent_id: 'agent_delete_route_123' }
+      },
+      async removePublicationArtifact(publicationRef, agent, payload) {
+        assert.equal(publicationRef, 'pub_delete_route_123')
+        assert.equal(agent.agent_id, 'agent_delete_route_123')
+        assert.equal(payload.url, 'https://example.com/results.tsv')
+        return {
+          ok: true,
+          status: 200,
+          data: {
+            status: 'artifact_removed',
+            publication_id: publicationRef,
+            removed_artifact_url: payload.url,
+          },
+        }
+      },
+    }
+  )
+
+  assert.equal(res.statusCode, 200)
+  assert.equal(res.payload.status, 'artifact_removed')
+  assert.equal(res.payload.publication_id, 'pub_delete_route_123')
+})
+
 test('register, claim start, callback, and publications entrypoints force node runtime', async () => {
   process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/clawscholar'
   process.env.API_KEY_ENCRYPTION_KEY = process.env.API_KEY_ENCRYPTION_KEY || 'test-secret'
@@ -480,6 +520,7 @@ test('register, claim start, callback, and publications entrypoints force node r
     '../../api/owner/agents/[agentRef]/keys/[action].js',
     '../../api/publications/index.js',
     '../../api/publications/[publicationRef].js',
+    '../../api/publications/[publicationRef]/artifacts.js',
   ]) {
     const module = await import(specifier)
     assert.equal(typeof module.default, 'function')

@@ -36,6 +36,17 @@ async function deletePublication(app, apiKey, publicationRef) {
   })
 }
 
+async function removePublicationArtifact(app, apiKey, publicationRef, artifactUrl) {
+  return app.request(`http://localhost/api/v1/publications/${publicationRef}/artifacts`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${apiKey}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ url: artifactUrl }),
+  })
+}
+
 async function startClaim(app, token, email) {
   return app.request(`http://localhost/api/v1/claims/${token}/start`, {
     method: 'POST',
@@ -1320,6 +1331,107 @@ test('delete publication requires valid bearer token and ownership', async () =>
     const wrongOwner = await deletePublication(ctx.app, stranger.api_key, published.publication_id)
     assert.equal(wrongOwner.status, 404)
     assert.equal((await parseJson(wrongOwner)).error, 'Publication not found.')
+  } finally {
+    await ctx.close()
+  }
+})
+
+test('removes an owned artifact from publication via API', async () => {
+  const ctx = await createTestContext()
+  try {
+    const registration = await parseJson(await registerAgent(ctx.app, {
+      name: 'Artifact Removal Agent',
+      description: 'Removes artifacts from owned publications through API endpoint tests.',
+    }))
+
+    const publishResponse = await publishPublication(ctx.app, registration.api_key, {
+      ...completePublicationPayload,
+      source_id: 'artifact-removal:publish',
+      artifacts: [
+        { type: 'results_ledger', url: 'https://example.com/results.tsv', requested_visibility: 'public' },
+        { type: 'figure', url: 'https://example.com/plot.png', requested_visibility: 'public' },
+      ],
+    })
+    assert.equal(publishResponse.status, 201)
+    const published = await parseJson(publishResponse)
+
+    const removeResponse = await removePublicationArtifact(
+      ctx.app,
+      registration.api_key,
+      published.publication_id,
+      'https://example.com/results.tsv'
+    )
+    assert.equal(removeResponse.status, 200)
+    const removeBody = await parseJson(removeResponse)
+
+    assert.equal(removeBody.status, 'artifact_removed')
+    assert.equal(removeBody.removed_artifact_url, 'https://example.com/results.tsv')
+    assert.equal(removeBody.artifacts_remaining, 1)
+
+    const storedPublication = await ctx.pool.query(
+      'SELECT artifacts FROM publications WHERE publication_id = $1',
+      [published.publication_id]
+    )
+    assert.equal(storedPublication.rowCount, 1)
+    assert.equal(storedPublication.rows[0].artifacts.length, 1)
+    assert.equal(storedPublication.rows[0].artifacts[0].url, 'https://example.com/plot.png')
+  } finally {
+    await ctx.close()
+  }
+})
+
+test('artifact removal endpoint requires ownership and returns not found for unknown artifact', async () => {
+  const ctx = await createTestContext()
+  try {
+    const owner = await parseJson(await registerAgent(ctx.app, {
+      name: 'Artifact Owner Agent',
+      description: 'Owns publication records for artifact removal ownership tests.',
+    }))
+    const stranger = await parseJson(await registerAgent(ctx.app, {
+      name: 'Artifact Stranger Agent',
+      description: 'Attempts artifact removals on publications it does not own.',
+    }))
+
+    const publishResponse = await publishPublication(ctx.app, owner.api_key, {
+      ...completePublicationPayload,
+      source_id: 'artifact-owner:publish',
+      artifacts: [{ type: 'results_ledger', url: 'https://example.com/results.tsv', requested_visibility: 'public' }],
+    })
+    assert.equal(publishResponse.status, 201)
+    const published = await parseJson(publishResponse)
+
+    const missingToken = await ctx.app.request(`http://localhost/api/v1/publications/${published.publication_id}/artifacts`, {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ url: 'https://example.com/results.tsv' }),
+    })
+    assert.equal(missingToken.status, 401)
+
+    const wrongOwner = await removePublicationArtifact(
+      ctx.app,
+      stranger.api_key,
+      published.publication_id,
+      'https://example.com/results.tsv'
+    )
+    assert.equal(wrongOwner.status, 404)
+
+    const missingArtifact = await removePublicationArtifact(
+      ctx.app,
+      owner.api_key,
+      published.publication_id,
+      'https://example.com/does-not-exist.tsv'
+    )
+    assert.equal(missingArtifact.status, 404)
+
+    const invalidPayload = await ctx.app.request(`http://localhost/api/v1/publications/${published.publication_id}/artifacts`, {
+      method: 'DELETE',
+      headers: {
+        authorization: `Bearer ${owner.api_key}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+    assert.equal(invalidPayload.status, 400)
   } finally {
     await ctx.close()
   }

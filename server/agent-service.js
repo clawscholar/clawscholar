@@ -244,6 +244,22 @@ function validateOwnerPolicyPayload(input = {}) {
   }
 }
 
+function validateArtifactRemovalPayload(input = {}) {
+  const artifactUrl = trimText(input.url || input.artifact_url)
+  const errors = []
+
+  if (!artifactUrl) {
+    errors.push({ field: 'url', message: 'Artifact url is required.' })
+  }
+
+  return {
+    normalized: {
+      artifact_url: artifactUrl,
+    },
+    errors,
+  }
+}
+
 function hasArtifactUrl(entry) {
   return Boolean(entry && typeof entry === 'object' && trimText(entry.url))
 }
@@ -1427,6 +1443,78 @@ export function createAgentService({ pool, config }) {
         }
       } catch (error) {
         await client.query('ROLLBACK')
+        throw error
+      } finally {
+        client.release()
+      }
+    },
+
+    async removePublicationArtifact(publicationRef, authAgent, input = {}) {
+      const normalizedPublicationRef = trimText(publicationRef)
+      if (!normalizedPublicationRef) {
+        return { ok: false, status: 400, error: 'Publication reference is required.' }
+      }
+
+      const agentId = authAgent?.agent_id
+      if (!agentId) {
+        return { ok: false, status: 401, error: 'Invalid or revoked API key.' }
+      }
+
+      const { normalized, errors } = validateArtifactRemovalPayload(input)
+      if (errors.length > 0) {
+        return { ok: false, status: 400, error: 'Invalid artifact removal payload.', fields: errors }
+      }
+
+      const client = await pool.connect()
+      try {
+        await client.query('BEGIN')
+
+        const publication = await resolveOwnedPublicationRef(client, agentId, normalizedPublicationRef, { forUpdate: true })
+        if (!publication) {
+          await client.query('COMMIT')
+          return { ok: false, status: 404, error: 'Publication not found.' }
+        }
+
+        const publicationRow = await client.query(
+          'SELECT artifacts FROM publications WHERE publication_id = $1 FOR UPDATE',
+          [publication.publication_id]
+        )
+
+        const existingArtifacts = sanitizeArtifacts(publicationRow.rows[0]?.artifacts || [])
+        const filteredArtifacts = existingArtifacts.filter((artifact) => artifact.url !== normalized.artifact_url)
+        const removedCount = existingArtifacts.length - filteredArtifacts.length
+
+        if (removedCount === 0) {
+          await client.query('COMMIT')
+          return { ok: false, status: 404, error: 'Artifact not found on this publication.' }
+        }
+
+        await client.query(
+          `UPDATE publications
+           SET artifacts = $2::jsonb
+           WHERE publication_id = $1`,
+          [publication.publication_id, JSON.stringify(filteredArtifacts)]
+        )
+
+        await client.query('COMMIT')
+        return {
+          ok: true,
+          status: 200,
+          data: {
+            status: 'artifact_removed',
+            publication_id: publication.publication_id,
+            research_id: publication.research_id,
+            removed_artifact_url: normalized.artifact_url,
+            removed_count: removedCount,
+            artifacts_remaining: filteredArtifacts.length,
+          },
+        }
+      } catch (error) {
+        try {
+          await client.query('ROLLBACK')
+        } catch {
+          // ignore rollback errors
+        }
         throw error
       } finally {
         client.release()

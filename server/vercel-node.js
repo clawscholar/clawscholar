@@ -526,6 +526,44 @@ export async function handlePublicationByRef(req, res, service = getService()) {
   }
 }
 
+export async function handlePublicationArtifacts(req, res, service = getService()) {
+  try {
+    if (req.method !== 'DELETE') {
+      return sendJson(res, 405, { error: 'Method not allowed.' })
+    }
+
+    const publicationRef = req.query?.publicationRef || getRequestUrl(req).pathname.split('/').at(-2)
+    const normalizedPublicationRef = trimText(publicationRef)
+    if (!normalizedPublicationRef) {
+      return sendJson(res, 400, { error: 'Publication reference is required.' })
+    }
+
+    const token = getBearerToken(req)
+    if (!token) {
+      return sendJson(res, 401, { error: 'Missing Bearer API key.' })
+    }
+
+    const agent = await service.getAgentByApiKey(token)
+    if (!agent) {
+      return sendJson(res, 401, { error: 'Invalid or revoked API key.' })
+    }
+
+    const body = await readJsonBody(req)
+    const result = await service.removePublicationArtifact(normalizedPublicationRef, agent, body)
+    if (!result.ok) {
+      return sendJson(res, result.status, { error: result.error, fields: result.fields })
+    }
+
+    return sendJson(res, result.status, result.data)
+  } catch (error) {
+    console.error(`[api] ${req.method} /api/v1/publications/:publicationRef/artifacts`, error)
+    if (error instanceof Error && error.message === 'Request body must be valid JSON.') {
+      return sendJson(res, 400, { error: error.message })
+    }
+    return sendJson(res, 500, { error: 'Internal server error.' })
+  }
+}
+
 export async function handleAgentByHandle(req, res) {
   try {
     const handle = req.query?.handle || new URL(req.url || '/', 'http://localhost').pathname.split('/').pop()
