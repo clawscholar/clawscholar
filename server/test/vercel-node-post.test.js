@@ -520,7 +520,6 @@ test('register, claim start, callback, and publications entrypoints force node r
     '../../api/owner/agents/[agentRef]/keys/[action].js',
     '../../api/publications/index.js',
     '../../api/publications/[publicationRef].js',
-    '../../api/publications/[publicationRef]/artifacts.js',
   ]) {
     const module = await import(specifier)
     assert.equal(typeof module.default, 'function')

@@ -1,11 +1,15 @@
-import { handlePublicationByRef, sendJson } from '../../server/vercel-node.js'
+import { handlePublicationArtifacts, handlePublicationByRef, sendJson } from '../../server/vercel-node.js'
 
 export const config = { runtime: 'nodejs' }
 
 export default async function publicationByRefRoute(req, res) {
   const pathname = new URL(req.url || '/', 'http://localhost').pathname
-  if (!/^\/api\/v1\/publications\/[^/]+\/?$/.test(pathname)) {
+  if (!/^\/api\/v1\/publications\/[^/]+(?:\/artifacts)?\/?$/.test(pathname)) {
     return sendJson(res, 404, { error: 'Not found.' })
+  }
+
+  if (/\/artifacts\/?$/.test(pathname)) {
+    return handlePublicationArtifacts(req, res)
   }
 
   return handlePublicationByRef(req, res)
