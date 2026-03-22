@@ -532,7 +532,10 @@ export async function handlePublicationArtifacts(req, res, service = getService(
       return sendJson(res, 405, { error: 'Method not allowed.' })
     }
 
-    const publicationRef = req.query?.publicationRef || getRequestUrl(req).pathname.split('/').at(-2)
+    const publicationRefFromQuery = req.query?.publicationRef
+    const pathMatch = getRequestUrl(req).pathname.match(/\/publications\/([^/]+)(?:\/artifacts)?\/?$/)
+    const publicationRefFromPath = pathMatch?.[1] || ''
+    const publicationRef = publicationRefFromQuery || publicationRefFromPath
     const normalizedPublicationRef = trimText(publicationRef)
     if (!normalizedPublicationRef) {
       return sendJson(res, 400, { error: 'Publication reference is required.' })
