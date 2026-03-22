@@ -5,9 +5,14 @@
   --ink: #202124;
   --muted: #5f6368;
   --border: #dadce0;
-  --primary: #1a0dab;
-  --primary-dark: #174ea6;
-  --accent: #1a73e8;
+  --primary: #037a68;
+  --primary-dark: #026556;
+  --accent: #037a68;
+  --accent-soft: #e6f4f1;
+  --accent-soft-border: #b9e2da;
+  --accent-soft-ink: #026556;
+  --accent-soft-muted: #2f7f74;
+  --primary-soft: rgba(3, 122, 104, 0.2);
   --radius: 6px;
   --shadow: 0 1px 3px rgba(60, 64, 67, 0.2);
 }
@@ -1779,9 +1784,9 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #174ea6;
-  background: #eef4ff;
-  border: 1px solid #d3e3fd;
+  color: var(--accent-soft-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft-border);
   border-radius: 999px;
   padding: 3px 8px;
   white-space: nowrap;
@@ -1813,11 +1818,11 @@ a:hover {
   align-items: center;
   padding: 4px 10px;
   margin-bottom: 10px;
-  background: #eef4ff;
-  border: 1px solid #d3e3fd;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft-border);
   border-radius: 999px;
   font-size: 12px;
-  color: #174ea6;
+  color: var(--accent-soft-ink);
 }
 
 .metric-inline-label {
@@ -1863,8 +1868,8 @@ a:hover {
 }
 
 .trust-badge.evidence.artifact_complete {
-  background: rgba(26, 115, 232, 0.12);
-  color: #174ea6;
+  background: rgba(3, 122, 104, 0.12);
+  color: var(--accent-soft-ink);
 }
 
 .trust-badge.evidence.incomplete {
@@ -1986,8 +1991,8 @@ a:hover {
 
 .metric-card {
   align-self: flex-start;
-  background: #eef4ff;
-  border: 1px solid #d3e3fd;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft-border);
   border-radius: 12px;
   padding: 14px 16px;
   min-width: 260px;
@@ -2002,13 +2007,13 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #4a6fb6;
+  color: var(--accent-soft-muted);
 }
 
 .metric-card-value {
   font-size: 28px;
   font-weight: 700;
-  color: #174ea6;
+  color: var(--accent-soft-ink);
   line-height: 1.1;
 }
 
@@ -2027,13 +2032,13 @@ a:hover {
 
 .metric-card-stat-label {
   font-size: 11px;
-  color: #4a6fb6;
+  color: var(--accent-soft-muted);
 }
 
 .metric-card-stat-value {
   font-size: 12px;
   font-weight: 700;
-  color: #174ea6;
+  color: var(--accent-soft-ink);
 }
 
 .publication-actions {
@@ -2421,8 +2426,8 @@ a:hover {
 }
 
 .status-chip.review {
-  background: rgba(26, 115, 232, 0.12);
-  color: #174ea6;
+  background: rgba(3, 122, 104, 0.12);
+  color: var(--accent-soft-ink);
 }
 
 .status-chip.neutral {
@@ -2431,8 +2436,8 @@ a:hover {
 }
 
 .note-callout {
-  background: #eef4ff;
-  border-color: #d3e3fd;
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
 }
 
 .continue-panel {
@@ -2513,7 +2518,7 @@ a:hover {
 }
 
 .publish-copy-button:focus-visible {
-  outline: 2px solid #d3e3fd;
+  outline: 2px solid var(--accent-soft-border);
   outline-offset: 1px;
 }
 
@@ -2597,9 +2602,9 @@ a:hover {
 }
 
 .platform-switch-button.active {
-  border-color: #d3e3fd;
-  background: #eef4ff;
-  color: #174ea6;
+  border-color: var(--accent-soft-border);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
 }
 
 .publish-steps-list {
@@ -2750,14 +2755,14 @@ a:hover {
 }
 
 .policy-card.active {
-  border-color: #d3e3fd;
-  background: #eef4ff;
+  border-color: var(--accent-soft-border);
+  background: var(--accent-soft);
 }
 
 .policy-current {
   font-size: 11px;
   font-weight: 700;
-  color: #174ea6;
+  color: var(--accent-soft-ink);
   text-transform: uppercase;
 }
 
@@ -2959,9 +2964,9 @@ a:hover {
 }
 
 .warning-callout {
-  border: 1px solid #d3e3fd;
-  background: #eef4ff;
-  color: #174ea6;
+  border: 1px solid var(--accent-soft-border);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
   border-radius: 10px;
   padding: 12px 14px;
   font-size: 13px;
